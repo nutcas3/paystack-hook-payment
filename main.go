@@ -7,7 +7,7 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"paystack/handler"
+	"github.com/nutcas3/paystack-hook-payment/handler"
 )
 
 func main()  {
