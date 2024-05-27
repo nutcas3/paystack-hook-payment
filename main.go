@@ -12,4 +12,23 @@ import (
 
 func main()  {
 	
+	if Er := godotenv.Load(); Er != nil {
+		log.Fatalf("error loading .env file (%s)", Er.Error())
+	}
+
+	apiLogger := zerolog.New(os.Stdout)
+	myRouter := gin.Default()
+
+	port := os.Getenv("PORT")
+	if port == "" {
+		panic("PORT missing in env")
+	}
+
+	apiLogger.Info().Msgf("server running at port %s", port)
+	myRouter.GET("/transaction/check", handler.CheckTransaction)
+	myRouter.POST("/transaction/webhook", handler.WebHook)
+
+	if er := http.ListenAndServe(":"+port, myRouter); er != nil {
+		log.Fatalf("unable to listen and serve at port %s", port)
+	}
 }
